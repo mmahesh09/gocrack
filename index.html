@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Modern Portfolio — Your Name</title>
+  <meta name="description" content="A clean, responsive portfolio template (HTML/CSS/JS)" />
+  <style>
+    /* ----------------------------
+       Simple modern CSS portfolio
+       - Responsive layout
+       - CSS variables for theming
+       - Accessible focus states
+       ---------------------------- */
+
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --muted:#9aa7b2;
+      --accent:#7c3aed; /* purple */
+      --glass: rgba(255,255,255,0.04);
+      --radius: 14px;
+      --max-width:1100px;
+      --ff-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Light theme overrides (js toggles .light on <html>) */
+    .light{
+      --bg: #f7fafc;
+      --card: #ffffff;
+      --muted: #546170;
+      --accent: #6b21a8;
+      --glass: rgba(0,0,0,0.04);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--ff-sans);
+      background:linear-gradient(180deg,var(--bg), #020617 120%);
+      color: #e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding:32px 20px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:28px;
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit
+    }
+
+    .logo{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,var(--accent),#f97316);display:grid;place-items:center;font-weight:700;box-shadow:0 6px 18px rgba(124,58,237,0.18)
+    }
+
+    nav{display:flex;gap:12px;align-items:center}
+    .nav-link{padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted);font-weight:600}
+    .nav-link:hover{color:var(--accent)}
+
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{
+      background:linear-gradient(90deg,var(--accent),#f97316);
+      border:none;color:white;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer
+    }
+
+    /* hero */
+    .hero{
+      display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;margin-bottom:28px
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+      border-radius:var(--radius);padding:22px;box-shadow:0 6px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px);
+    }
+
+    .intro h1{font-size:clamp(28px,4vw,40px);margin:0 0 12px}
+    .intro p{margin:0;color:var(--muted)}
+
+    .portrait{
+      width:100%;height:100%;min-height:260px;border-radius:12px;background:linear-gradient(180deg,#0ea5e9 0%, #7c3aed 100%);display:grid;place-items:center;font-size:22px;font-weight:700;color:rgba(255,255,255,0.95)
+    }
+
+    /* projects grid */
+    .section{margin-bottom:28px}
+    .section h2{margin:0 0 14px}
+
+    .grid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:16px
+    }
+
+    .project{
+      padding:14px;border-radius:12px;background:var(--card);cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;display:flex;flex-direction:column;gap:10px
+    }
+    .project:hover{transform:translateY(-6px);box-shadow:0 8px 28px rgba(2,6,23,0.6)}
+    .project h3{margin:0;font-size:16px}
+    .project p{margin:0;color:var(--muted);font-size:13px}
+
+    /* skills */
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
+    .pill{padding:8px 10px;border-radius:999px;background:var(--glass);font-weight:600;color:var(--muted)}
+
+    /* contact */
+    .contact-form{display:grid;gap:10px}
+    input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    input:focus,textarea:focus{outline:2px solid rgba(124,58,237,0.18)}
+
+    /* footer */
+    footer{padding:18px 0;color:var(--muted);text-align:center}
+
+    /* responsive */
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      header{flex-direction:column;align-items:flex-start}
+      .grid{grid-template-columns:1fr}
+      .portrait{min-height:180px}
+      body{padding:18px}
+    }
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .center{display:grid;place-items:center}
+
+    /* accessible focus */
+    a:focus,button:focus,input:focus,textarea:focus{outline:3px solid rgba(124,58,237,0.14);outline-offset:2px}
+
+    /* modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal{max-width:920px;width:100%;background:var(--card);border-radius:12px;padding:20px}
+    .modal.show{display:flex}
+
+    /* small toggle */
+    .toggle{display:inline-flex;align-items:center;gap:8px}
+    .hamburger{display:none}
+    @media (max-width:720px){.hamburger{display:inline-flex}}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">YN</div>
+        <div>
+          <div style="font-weight:800">Your Name</div>
+          <div style="font-size:12px;color:var(--muted)">Frontend Engineer • Designer</div>
+        </div>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <a class="nav-link" href="#projects">Projects</a>
+        <a class="nav-link" href="#skills">Skills</a>
+        <a class="nav-link" href="#contact">Contact</a>
+        <button class="btn" id="downloadBtn">Resume</button>
+        <button class="hamburger nav-link" id="menuBtn" aria-expanded="false">☰</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="card intro">
+          <p style="margin:0;color:var(--muted);font-weight:700">Hi — I'm</p>
+          <h1>YOUR NAME<span style="color:var(--accent)">.</span></h1>
+          <p class="muted">I build beautiful, accessible user interfaces and delightful front-end experiences. I focus on performance, motion, and polish.</p>
+
+          <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
+            <a class="btn" href="#contact">Hire me</a>
+            <div class="toggle" title="Toggle theme">
+              <label for="themeToggle" style="font-weight:700">Theme</label>
+              <input type="checkbox" id="themeToggle" aria-label="Toggle light theme">
+            </div>
+          </div>
+
+          <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+            <div class="card" style="padding:10px;background:var(--glass);display:flex;gap:10px;align-items:center">
+              <div style="font-weight:800">5+</div>
+              <div class="muted" style="font-size:13px">Years experience</div>
+            </div>
+            <div class="card" style="padding:10px;background:var(--glass);display:flex;gap:10px;align-items:center">
+              <div style="font-weight:800">30+</div>
+              <div class="muted" style="font-size:13px">Projects shipped</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portrait card center" aria-hidden="true">
+          <!-- Replace with an <img> or avatar -->
+          <div>
+            <div style="font-size:28px;">Your Photo</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:6px">Product UI • Motion • Accessibility</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="projects" class="section">
+        <h2>Highlighted projects</h2>
+        <div style="margin-bottom:10px;color:var(--muted)">Click a project to view details.</div>
+
+        <div class="grid" id="projectsGrid">
+          <!-- Project 1 -->
+          <article tabindex="0" class="project" role="button" data-title="Design System" data-desc="A component library + design tokens for scalable design systems." data-stack="React • TypeScript • Storybook" data-link="#">
+            <div style="font-size:12px;color:var(--muted)">Web</div>
+            <h3>Design System</h3>
+            <p>Reusable components, accessible patterns, and tokens for scale.</p>
+          </article>
+
+          <!-- Project 2 -->
+          <article tabindex="0" class="project" role="button" data-title="E‑commerce Revamp" data-desc="Performance-focused rewrite of an e-commerce storefront." data-stack="Next.js • GraphQL • Vercel" data-link="#">
+            <div style="font-size:12px;color:var(--muted)">E‑commerce</div>
+            <h3>Storefront Rebuild</h3>
+            <p>Improved conversions, faster pages, and A11y fixes.</p>
+          </article>
+
+          <!-- Project 3 -->
+          <article tabindex="0" class="project" role="button" data-title="Analytics Dashboard" data-desc="Real‑time charts, drilldowns and anomaly alerts." data-stack="D3 • WebSockets • Tailwind" data-link="#">
+            <div style="font-size:12px;color:var(--muted)">SaaS</div>
+            <h3>Analytics Dashboard</h3>
+            <p>Insightful visualizations for product teams.</p>
+          </article>
+
+          <!-- Add more projects as needed -->
+        </div>
+      </section>
+
+      <section id="skills" class="section card">
+        <h2>Skills</h2>
+        <div class="skills" style="margin-top:12px">
+          <span class="pill">HTML</span>
+          <span class="pill">CSS</span>
+          <span class="pill">JavaScript</span>
+          <span class="pill">TypeScript</span>
+          <span class="pill">React</span>
+          <span class="pill">Accessibility</span>
+          <span class="pill">Design Systems</span>
+        </div>
+      </section>
+
+      <section id="contact" class="section">
+        <div class="card">
+          <h2>Contact</h2>
+          <p class="muted">I'm available for freelance & full‑time roles. Send a note and I'll reply.</p>
+
+          <form id="contactForm" class="contact-form" onsubmit="return false">
+            <input id="name" type="text" placeholder="Your name" required />
+            <input id="email" type="email" placeholder="Email address" required />
+            <textarea id="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+            <div style="display:flex;gap:10px;align-items:center">
+              <button class="btn" id="sendBtn">Send</button>
+              <div class="muted" style="font-size:13px">Or email <a href="mailto:hello@yourdomain.com" style="color:var(--accent);text-decoration:none">hello@yourdomain.com</a></div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="muted">© <span id="year"></span> Your Name — Built with HTML/CSS/JS</div>
+    </footer>
+  </div>
+
+  <!-- Modal for project details -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" role="document">
+      <button id="closeModal" style="float:right;background:none;border:none;font-size:18px;cursor:pointer">✕</button>
+      <h3 id="modalTitle">Project title</h3>
+      <p id="modalStack" class="muted" style="margin-top:6px"></p>
+      <p id="modalDesc" style="margin-top:12px;color:var(--muted)"></p>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <a id="modalLink" class="btn" href="#">View Project</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Small interactive behaviors
+    (function(){
+      const html = document.documentElement;
+      const toggle = document.getElementById('themeToggle');
+      const year = document.getElementById('year');
+      year.textContent = new Date().getFullYear();
+
+      // initialize based on prefers-color-scheme
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      if(prefersLight) html.classList.add('light');
+
+      // toggle theme
+      toggle.addEventListener('change', ()=>{
+        html.classList.toggle('light', toggle.checked);
+      });
+
+      // resume button example (you could replace link)
+      document.getElementById('downloadBtn').addEventListener('click', ()=>{
+        // replace URL with your resume link or generate PDF
+        window.open('https://example.com/resume.pdf','_blank');
+      });
+
+      // project modal
+      const projectsGrid = document.getElementById('projectsGrid');
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalStack = document.getElementById('modalStack');
+      const modalLink = document.getElementById('modalLink');
+
+      function openModal(data){
+        modalTitle.textContent = data.title;
+        modalDesc.textContent = data.desc;
+        modalStack.textContent = data.stack || '';
+        modalLink.href = data.link || '#';
+        modalBackdrop.style.display = 'flex';
+        modalBackdrop.setAttribute('aria-hidden','false');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeModal(){
+        modalBackdrop.style.display = 'none';
+        modalBackdrop.setAttribute('aria-hidden','true');
+        document.body.style.overflow = '';
+      }
+
+      projectsGrid.addEventListener('click', (e)=>{
+        const card = e.target.closest('.project');
+        if(!card) return;
+        const data = {
+          title: card.dataset.title || card.querySelector('h3').innerText,
+          desc: card.dataset.desc || card.querySelector('p').innerText,
+          stack: card.dataset.stack,
+          link: card.dataset.link
+        };
+        openModal(data);
+      });
+      projectsGrid.addEventListener('keydown', (e)=>{
+        if(e.key === 'Enter'){
+          const card = e.target.closest('.project');
+          if(!card) return;
+          card.click();
+        }
+      });
+
+      document.getElementById('closeModal').addEventListener('click', closeModal);
+      modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) closeModal(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeModal(); });
+
+      // fake send
+      document.getElementById('sendBtn').addEventListener('click', ()=>{
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+        if(!name || !email || !message){
+          alert('Please fill all fields.');return;
+        }
+        // In production: replace with fetch to your API or form backend
+        alert('Thanks — message sent (demo).');
+        document.getElementById('contactForm').reset();
+      });
+
+      // lightweight accessibility: trap focus in modal when open
+      // (for brevity this is simple — consider a full solution in production)
+    })();
+  </script>
+</body>
+</html>
